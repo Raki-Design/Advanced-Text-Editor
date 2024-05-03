@@ -7,6 +7,19 @@ let editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
     extraKeys: {"Ctrl-Space": "autocomplete"}
 });
 
+// Add paste event listener to the editor
+editor.on("paste", function(editor, event) {
+    // Prevent the default paste behavior
+    event.preventDefault();
+
+    // Get the pasted text
+    let clipboardData = event.clipboardData || window.clipboardData;
+    let pastedText = clipboardData.getData('text/plain');
+
+    // Insert the pasted text into the editor at the current cursor position
+    editor.replaceSelection(pastedText);
+});
+
 document.getElementById('run-btn').addEventListener('click', function() {
     let code = editor.getValue();
     let iframe = document.getElementById('output');
